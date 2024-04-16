@@ -1,0 +1,139 @@
+<?php
+include 'includes/nav.inc.php';
+?>
+<body>
+<td>
+  <div class="">
+
+</td>
+<h2 style="color: white">Welcome to the Archery Players Website</h2>
+<p style="color: white">
+  This website is dedicated to Archery players and provides information about various players, teams, and the latest
+  news in the world of Archery.
+</p>
+<p style="color: white">
+  Explore the website to find profiles of your favorite players, learn about different teams, and stay updated with
+  the latest football news and
+  A tournament is a competition involving at least three competitors, all participating in a sport or game.
+  More specifically, the term may be used in either of two overlapping senses:
+</p>
+<p>.</p>
+
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "tournamentmaker";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+echo "Connection failed: " . $e->getMessage();
+}
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+session_start();
+}
+
+$sql = "SELECT * FROM referee";
+$result = $conn->query($sql);
+?>
+
+
+<div class="container homecontainerlogin">
+
+  <strong><h2 style="color: white">
+    <!--            A tournament is a competition involving at least three competitors, all participating in a sport or game.-->
+    <!--            More specifically, the term may be used in either of two overlapping senses:-->
+    This is all the referee's in the tournament
+  </strong>
+  <p>-----------</p>
+  <!---->
+  <!--    <form method="POST" action="DBconn/DBaddTeam.php">-->
+  <!--        <input type="submit" class="w-full" id="Add" value="Add referee's">-->
+  <!--    </form>-->
+
+
+  <form method="POST" action="DBconn/DBaddTeam.php">
+    <input type="submit" class="w-full" id="Add" value="Add referee's">
+  </form>
+
+
+  <div class="container p.round1">
+
+    <table class="table" id="scroll">
+      <thead>
+      <tr>
+
+
+
+      </thead>
+      <tbody>
+      <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
+      <tr class="item">
+        <form id="deleteForm" action="php/delete.php" method="post">
+
+
+          <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+
+
+          <td><h2><?php echo $row['name']; ?></h2></td>
+
+          <td><h2><?php echo $row['street']; ?></h2></td>
+
+          <td><h2><?php echo $row['housenumber']; ?></h2></td>
+
+          <td><h2><?php echo $row['postalcode']; ?></h2></td>
+
+          <td><h2><?php echo $row['FK_city']; ?></h2></td>
+
+
+
+
+
+          <td>
+            <div class="split">
+              <button form="deleteForm" onclick="alert('deleted')"type="submit">Delete</button>
+
+              <button form="editForm" type="submit">edit</button>
+            </div>
+          </td>
+          <!---->
+          <!--                        <button> <td>class="image-buttonnn">-->
+          <!--                            <img src="../images/layered-waves-haikei%20(1).png"alt="Paris" width="30" height="30" alt="Image">-->
+          <!--                            <span>delete button </span>-->
+          <!--                        </button></td>-->
+        </form>
+        <form id="editForm" action="includes/edit.inc.php" method="post">
+
+          <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+          <input type="hidden" name="name" value="<?php echo $row['name']; ?>">
+          <input type="hidden" name="street" value="<?php echo $row ['street']; ?>">
+          <input type="hidden" name="housenumber" value="<?php echo $row ['housenumber']; ?>">
+          <input type="hidden" name="postalcode" value="<?php echo $row ['postalcode']; ?>">
+          <input type="hidden" name="FK_city" value="<?php echo $row ['FK_city']; ?>">
+          <?php //echo $row['FK_city']; ?><!--">-->
+
+          <!-- <select> -->
+          <!--                            <div class="container " style="height: 28vh;">-->
+
+          <!--                            <option value="1">Arnhem</option>-->
+          <!--                            <option value="2">Velp</option>-->
+          <!--                            <option value="3">Velp</option>-->
+          <!--                            <option value="4">Velp</option>-->
+          <!--                            <option value="5">Velp</option>-->
+
+
+          <!--                        </select>-->
+        </form>
+
+      </tr>
+      <?php endwhile; ?>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
